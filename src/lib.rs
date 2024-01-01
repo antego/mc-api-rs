@@ -120,6 +120,7 @@ pub fn get_device_info(path: &Path) -> Result<media_ffi::media_device_info, Errn
     }
 }
 
+#[derive(Debug)]
 pub enum GetTopologyError {
     IoctlError(Errno),
     VersionChange { old_version: u64, new_version: u64 },
