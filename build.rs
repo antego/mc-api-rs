@@ -2,6 +2,10 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {
+    let generate_bindings = env::var_os("MC_API_BINDGEN");
+    if let None = generate_bindings {
+        return;
+    }
 
     // Tell cargo to invalidate the built crate whenever the wrapper changes
     println!("cargo:rerun-if-changed=wrapper.h");
