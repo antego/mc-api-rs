@@ -1,5 +1,5 @@
 [package]
-name = "mc-api-rs"
+name = "mc-api"
 version = "0.1.0"
 authors = ["antego"]
 edition = "2021"
