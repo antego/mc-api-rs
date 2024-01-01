@@ -1,0 +1,11 @@
+[package]
+name = "mc-api-rs"
+version = "0.1.0"
+authors = ["antego"]
+edition = "2021"
+
+[dependencies]
+nix = {version = "0.27.1", features = ["ioctl"]}
+
+[build-dependencies]
+bindgen = "0.69.1"
