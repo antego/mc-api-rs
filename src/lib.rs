@@ -1,6 +1,8 @@
 use std::{ffi::CStr, os::fd::AsRawFd, os::raw::c_char, path::Path};
 
-use media_ffi::{media_v2_entity, media_v2_interface, media_v2_link, media_v2_pad, media_device_info};
+use media_ffi::{
+    media_device_info, media_v2_entity, media_v2_interface, media_v2_link, media_v2_pad,
+};
 use nix::errno::Errno;
 
 mod media_ffi;
@@ -20,13 +22,13 @@ nix::ioctl_readwrite!(
 
 #[derive(Debug)]
 pub struct MediaDeviceInfo {
-    driver: String,
-    model: String,
-    serial: String,
-    bus_info: String,
-    media_version: u32,
-    hw_version: u32,
-    driver_version: u32
+    pub driver: String,
+    pub model: String,
+    pub serial: String,
+    pub bus_info: String,
+    pub media_version: u32,
+    pub hw_version: u32,
+    pub driver_version: u32,
 }
 
 impl MediaDeviceInfo {
@@ -45,10 +47,10 @@ impl MediaDeviceInfo {
 
 #[derive(Debug)]
 pub struct MediaV2Entity {
-    id: u32,
-    name: String,
-    function: u32,
-    flags: u32,
+    pub id: u32,
+    pub name: String,
+    pub function: u32,
+    pub flags: u32,
 }
 
 impl MediaV2Entity {
@@ -64,15 +66,15 @@ impl MediaV2Entity {
 
 #[derive(Debug)]
 pub struct MediaV2IntfDevnode {
-    major: u32,
-    minor: u32,
+    pub major: u32,
+    pub minor: u32,
 }
 
 #[derive(Debug)]
 pub struct MediaV2Interface {
-    id: u32,
-    intf_type: u32,
-    flags: u32,
+    pub id: u32,
+    pub intf_type: u32,
+    pub flags: u32,
     // todo devnode
 }
 
@@ -88,10 +90,10 @@ impl MediaV2Interface {
 
 #[derive(Debug)]
 pub struct MediaV2Pad {
-    id: u32,
-    entity_id: u32,
-    flags: u32,
-    index: u32,
+    pub id: u32,
+    pub entity_id: u32,
+    pub flags: u32,
+    pub index: u32,
 }
 
 impl MediaV2Pad {
@@ -107,10 +109,10 @@ impl MediaV2Pad {
 
 #[derive(Debug)]
 pub struct MediaV2Link {
-    id: u32,
-    source_id: u32,
-    sink_id: u32,
-    flags: u32,
+    pub id: u32,
+    pub source_id: u32,
+    pub sink_id: u32,
+    pub flags: u32,
 }
 
 impl MediaV2Link {
@@ -126,11 +128,11 @@ impl MediaV2Link {
 
 #[derive(Debug)]
 pub struct MediaV2Topology {
-    topology_version: u64,
-    entities: Vec<MediaV2Entity>,
-    interfaces: Vec<MediaV2Interface>,
-    pads: Vec<MediaV2Pad>,
-    links: Vec<MediaV2Link>,
+    pub topology_version: u64,
+    pub entities: Vec<MediaV2Entity>,
+    pub interfaces: Vec<MediaV2Interface>,
+    pub pads: Vec<MediaV2Pad>,
+    pub links: Vec<MediaV2Link>,
 }
 
 pub fn get_device_info(path: &Path) -> Result<MediaDeviceInfo, Errno> {
