@@ -1,6 +1,6 @@
 use std::{ffi::CStr, os::fd::AsRawFd, os::raw::c_char, path::Path};
 
-use media_ffi::{media_v2_entity, media_v2_interface, media_v2_link, media_v2_pad};
+use media_ffi::{media_v2_entity, media_v2_interface, media_v2_link, media_v2_pad, media_device_info};
 use nix::errno::Errno;
 
 mod media_ffi;
@@ -17,6 +17,31 @@ nix::ioctl_readwrite!(
     0x04,
     media_ffi::media_v2_topology
 );
+
+#[derive(Debug)]
+struct MediaDeviceInfo {
+    driver: String,
+    model: String,
+    serial: String,
+    bus_info: String,
+    media_version: u32,
+    hw_version: u32,
+    driver_version: u32
+}
+
+impl MediaDeviceInfo {
+    fn from_ffi(info: &media_device_info) -> MediaDeviceInfo {
+        MediaDeviceInfo {
+            driver: c_str_to_str(&info.driver),
+            model: c_str_to_str(&info.model),
+            serial: c_str_to_str(&info.serial),
+            bus_info: c_str_to_str(&info.bus_info),
+            media_version: info.media_version,
+            hw_version: info.hw_revision,
+            driver_version: info.driver_version,
+        }
+    }
+}
 
 #[derive(Debug)]
 struct MediaV2Entity {
@@ -108,14 +133,14 @@ pub struct MediaV2Topology {
     links: Vec<MediaV2Link>,
 }
 
-pub fn get_device_info(path: &Path) -> Result<media_ffi::media_device_info, Errno> {
+pub fn get_device_info(path: &Path) -> Result<MediaDeviceInfo, Errno> {
     let video_device = std::fs::File::open(path).unwrap();
     let video_device = video_device.as_raw_fd();
     let mut dev_info: media_ffi::media_device_info = unsafe { std::mem::zeroed() };
 
     let result = unsafe { media_ioc_device_info(video_device, &mut dev_info) };
     match result {
-        Ok(_) => return Result::Ok(dev_info),
+        Ok(_) => return Result::Ok(MediaDeviceInfo::from_ffi(&dev_info)),
         Err(err) => return Result::Err(err),
     }
 }
