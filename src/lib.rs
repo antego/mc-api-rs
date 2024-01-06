@@ -19,7 +19,7 @@ nix::ioctl_readwrite!(
 );
 
 #[derive(Debug)]
-struct MediaDeviceInfo {
+pub struct MediaDeviceInfo {
     driver: String,
     model: String,
     serial: String,
@@ -44,7 +44,7 @@ impl MediaDeviceInfo {
 }
 
 #[derive(Debug)]
-struct MediaV2Entity {
+pub struct MediaV2Entity {
     id: u32,
     name: String,
     function: u32,
@@ -63,13 +63,13 @@ impl MediaV2Entity {
 }
 
 #[derive(Debug)]
-struct MediaV2IntfDevnode {
+pub struct MediaV2IntfDevnode {
     major: u32,
     minor: u32,
 }
 
 #[derive(Debug)]
-struct MediaV2Interface {
+pub struct MediaV2Interface {
     id: u32,
     intf_type: u32,
     flags: u32,
@@ -87,7 +87,7 @@ impl MediaV2Interface {
 }
 
 #[derive(Debug)]
-struct MediaV2Pad {
+pub struct MediaV2Pad {
     id: u32,
     entity_id: u32,
     flags: u32,
@@ -106,7 +106,7 @@ impl MediaV2Pad {
 }
 
 #[derive(Debug)]
-struct MediaV2Link {
+pub struct MediaV2Link {
     id: u32,
     source_id: u32,
     sink_id: u32,
